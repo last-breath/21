@@ -35,90 +35,77 @@ do/****总开关***/
   x=random();
   sump=cards[x].point;
   cards[x].judge=1;
-  printf("\nPlayer,your card is %10s %s\nDo you want to get another card(press the key)\n\"n\":No  else:Yes\n",cards[x].sort,cards[x].name);
-  op=getchar();
-  del=getchar();
+  printf("\nPlayer,your first card is %10s %s\nDo you want to get another card(press the key)\n\"n\":No  else:Yes\n",cards[x].sort,cards[x].name);
   do{                        /******判断牌是否被用过*****/
   x=random();                /******判断牌是否被用过*****/
   }while(cards[x].judge==1); /******判断牌是否被用过*****/
   sumb=cards[x].point;
   cards[x].judge=1;
+  ob=sai(sumb);
 
   do
  {
    /****player*****/
+   op=getchar();   /***等待指令***/
+   del=getchar();  /***等待指令***/
    if(op!='n')
    {
-      printf("\nPlayer,your card is %10s %s\n",cards[x].sort,cards[x].name);
-      sump+=cards[x].point;/***计算总点数***/
-      if(sump<22)
-      printf("Do you want to get another card?(press the key)\n \"n\":No  else:Yes\n");
-      if(sump>21)/****判断是否爆牌****/
-        {        /****判断是否爆牌****/
-         op='n'; /****判断是否爆牌****/
-         ob='n'; /****判断是否爆牌****/
-        }        /****判断是否爆牌****/
-      else
-      { op=getchar();
-        del=getchar();
-        if(op!='n')
-         {
-          do                          /******判断牌是否被用过*****/
-            {                         /******判断牌是否被用过*****/
-            x=random();               /******判断牌是否被用过*****/
-            }while(cards[x].judge!=0);/******判断牌是否被用过*****/
-          cards[x].judge=1;/***将牌变为用过***/
-         }
-      }
+    do                         /***抽牌***判断牌是否被用过*****/
+     {                         /***抽牌***判断牌是否被用过*****/
+      x=random();              /***抽牌***判断牌是否被用过*****/
+     }while(cards[x].judge!=0);/***抽牌***判断牌是否被用过*****/
+    cards[x].judge=1;/***将牌变为用过***/
+    printf("\nPlayer,your card is %10s %s\n",cards[x].sort,cards[x].name);/*****输出抽牌****/
+    sump+=cards[x].point;/***计算总点数***/
+    if(sump>21)/****判断是否爆牌****/
+     {         /****判断是否爆牌****/
+       op='n'; /****判断是否爆牌****/
+       ob='n'; /****判断是否爆牌****/
+       printf("You burst!");
+     }         /****判断是否爆牌****/
    }
    /****banker*****/
-   if(ob!='n')
+   if(ob!='n')      /***如果不爆牌并且没说停止，banker决定是否抽牌***/
+    {ob=sai(sumb);   /***如果不爆牌并且没说停止，banker决定是否抽牌***/
+     if(ob=='n')
+     printf("Banker stopped\n.");/***如果决定不抽牌，输出停止抽牌***/
+    }
+   if(ob!='n')      /***如果不爆牌并决定抽牌***/
    {
-      sumb+=cards[x].point;/***计算总点数***/
-      cards[x].judge=1;/***将牌变为用过***/
-      if(sumb>21)/****判断是否爆牌****/
-        {        /****判断是否爆牌****/
-         op='n'; /****判断是否爆牌****/
-         ob='n'; /****判断是否爆牌****/
-        }        /****判断是否爆牌****/
-      else
-      {
-          ob=sai(sumb);
-          if(ob!='n')
-          {
-              do                           /******判断牌是否被用过*****/
-                 {                         /******判断牌是否被用过*****/
-                 x=random();               /******判断牌是否被用过*****/
-                 }while(cards[x].judge==1);/******判断牌是否被用过*****/
-              cards[x].judge=1;/***将牌变为用过***/
-              printf("\nBanker also got a card.\n");
-          }
-          else printf("\nBanker stopped.\n");
-
-      }
+    do                           /****抽牌**判断牌是否被用过*****/
+       {                         /****抽牌**判断牌是否被用过*****/
+       x=random();               /****抽牌**判断牌是否被用过*****/
+       }while(cards[x].judge==1);/****抽牌**判断牌是否被用过*****/
+    cards[x].judge=1;/***将牌变为用过***/
+    sumb+=cards[x].point;/***计算总点数***/
+    printf("Banker also got a card.\n");
+     if(sumb>21)/****判断是否爆牌****/
+       {        /****判断是否爆牌****/
+        op='n'; /****判断是否爆牌****/
+        ob='n'; /****判断是否爆牌****/
+        printf("Banker burst!\n");
+       }        /****判断是否爆牌****/
    }
+   if(op!='n')                                                       /***Banker抽完牌后询问是否要牌***/
+   printf("Do you want to get another card?\n\"n\":NO  else:YES\n"); /***Banker抽完牌后询问是否要牌***/
  }while(op!='n'|ob!='n');
- printf("Player's point is %d,banker's point is %d.\n",sump,sumb);
-
-
-
-
+printf("Player's point is %d,Banker's point is %d.\n",sump,sumb);
 if(sump>21)     /***********compare************/
  {
-     printf("banker win!\n");
+     printf("Banker win!\n");
  }
  if(sumb>21)
  {
-    printf("player win!\n");
+    printf("Player win!\n");
  }
  if(sump<22&sumb<22)
  {
    if(sump>sumb)
-    printf("player win!\n");
+    printf("Player win!\n");
    if(sump<sumb)
-    printf("banker win!\n");
+    printf("Banker win!\n");
    if(sump==sumb)
-    printf("bush!\n");
+    printf("Bush!\n");
  }             /**************compare*************/
   printf("\nWhat do you want to do?(press the key)\nq:end   else:continue\n");/***开关***/
   o=getchar();/**开关控制变量**/
@@ -134,9 +121,9 @@ if(sump>21)     /***********compare************/
     default:
          break;
     }
-  int i;               /***洗牌**/
-  for(i=0;i<52;i++)    /***洗牌**/
-    cards[i].judge=0;  /***洗牌**/
+  int i;               /***洗牌***/
+  for(i=0;i<52;i++)    /***洗牌***/
+    cards[i].judge=0;  /***洗牌0***/
 }while(o!='q');/***开关***/
 return 0;
 }
