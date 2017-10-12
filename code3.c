@@ -47,7 +47,7 @@ do/****总开关***/
   do
  {
    /****player*****/
-   do
+   if(op!='n')
    {
       printf("\nPlayer,your card is %10s %s\n",cards[x].sort,cards[x].name);
       sump+=cards[x].point;/***计算总点数***/
@@ -66,13 +66,13 @@ do/****总开关***/
           do                          /******判断牌是否被用过*****/
             {                         /******判断牌是否被用过*****/
             x=random();               /******判断牌是否被用过*****/
-            }while(cards[x].judge==1);/******判断牌是否被用过*****/
+            }while(cards[x].judge!=0);/******判断牌是否被用过*****/
           cards[x].judge=1;/***将牌变为用过***/
          }
       }
-   }while(op!='n');
+   }
    /****banker*****/
-   do
+   if(ob!='n')
    {
       sumb+=cards[x].point;/***计算总点数***/
       cards[x].judge=1;/***将牌变为用过***/
@@ -91,10 +91,12 @@ do/****总开关***/
                  x=random();               /******判断牌是否被用过*****/
                  }while(cards[x].judge==1);/******判断牌是否被用过*****/
               cards[x].judge=1;/***将牌变为用过***/
+              printf("\nBanker also got a card.\n");
           }
+          else printf("\nBanker stopped.\n");
 
       }
-   }while(ob!='n');
+   }
  }while(op!='n'|ob!='n');
  printf("Player's point is %d,banker's point is %d.\n",sump,sumb);
 
